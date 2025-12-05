@@ -1,6 +1,20 @@
 
+local po,ts = game:WaitForChild("CoreGui"):WaitForChild("RobloxPromptGui"):WaitForChild("promptOverlay"),game:GetService('TeleportService')
+po.ChildAdded:connect(function(a)
+if a.Name == 'ErrorPrompt' then
 
+while wait(1) do pcall(function()
+ts:Teleport(3237168)
+end)
+end
+
+end
+end)
+
+repeat wait() until game:IsLoaded()
+game.StarterGui:SetCore("SendNotification", {Title = "Wave Hub";Text = "Loading";Duration = 25;})
 repeat task.wait() until game:IsLoaded()
+
 
 _G.hjasfhjkaskjfgkhjafsgashjkgfaghjfsghfjas = true 
 _G.ASJKDJSAKDASLKDSJKLDHEHRUIEIHHGF = true
