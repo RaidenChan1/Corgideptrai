@@ -1,5 +1,5 @@
 
-local Webhook_URL = "https://discord.com/api/webhooks/1446762884901376031/ZnuKC_nRtPGR8isIFEssv6jXMsqCcxJAvkn0pApSgmG5R5pd3OF8d2b6XWUyXlU57xY-" -- (Tương ứng v19 cũ)
+local Webhook_URL = "https://discord.com/api/webhooks/1446762884901376031/ZnuKC_nRtPGR8isIFEssv6jXMsqCcxJAvkn0pApSgmG5R5pd3OF8d2b6XWUyXlU57xY-"
 
 
 local ExecutorName = identifyexecutor and identifyexecutor() or "Unknown Executor" 
