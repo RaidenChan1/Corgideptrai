@@ -3,7 +3,7 @@ getgenv().Key = "DÁN_KEY_CỦA_BẠN_VÀO_ĐÂY"
 
 -- [[ CẤU HÌNH CỦA ADMIN (BẠN SỬA Ở ĐÂY) ]] --
 local Settings = {
-    Service = "pelinda", -- Thay đúng tên Service bạn đã cài trong Bot Discord
+    Service = "ditroblox", -- Thay đúng tên Service bạn đã cài trong Bot Discord
     APILink = "https://pandadevelopment.net/api/validate-key",
     MainScript = "https://pandadevelopment.net/virtual/file/f0e65a230c7b0bfa" -- Link script thật của bạn
 }
