@@ -1,1 +1,72 @@
-s
+-- [[ PHẦN NGƯỜI DÙNG NHẬP KEY ]] --
+getgenv().Key = "DÁN_KEY_CỦA_BẠN_VÀO_ĐÂY" 
+
+-- [[ CẤU HÌNH CỦA ADMIN (BẠN SỬA Ở ĐÂY) ]] --
+local Settings = {
+    Service = "pelinda", -- Thay đúng tên Service bạn đã cài trong Bot Discord
+    APILink = "https://pandadevelopment.net/api/validate-key",
+    MainScript = "https://pandadevelopment.net/virtual/file/f0e65a230c7b0bfa" -- Link script thật của bạn
+}
+
+----------------------------------------------------------------------
+-- KHÔNG CẦN SỬA Ở DƯỚI ĐÂY TRỪ KHI BẠN BIẾT CODE
+----------------------------------------------------------------------
+
+local Players = game:GetService("Players")
+local LocalPlayer = Players.LocalPlayer
+local HttpService = game:GetService("HttpService")
+
+-- 1. Hàm lấy HWID (Tự động nhận diện Executor)
+local function GetHWID()
+    if gethwid then 
+        return gethwid()
+    elseif request then 
+        return game:GetService("RbxAnalyticsService"):GetClientId()
+    else
+        return LocalPlayer.UserId -- Fallback (yếu)
+    end
+end
+
+-- 2. Kiểm tra xem người dùng có nhập key chưa
+if not getgenv().Key or getgenv().Key == "" then
+    return LocalPlayer:Kick("❌ Vui lòng nhập Key vào dòng đầu tiên của Script: getgenv().Key = '...'")
+end
+
+-- 3. Gửi yêu cầu kiểm tra Key
+local hwid = GetHWID()
+local requestUrl = string.format("%s?service=%s&key=%s&hwid=%s", Settings.APILink, Settings.Service, getgenv().Key, hwid)
+
+local success, response = pcall(function()
+    return game:HttpGet(requestUrl)
+end)
+
+if success then
+    local data = pcall(function() return HttpService:JSONDecode(response) end) and HttpService:JSONDecode(response) or nil
+    
+    if data and (data.valid == true or data.status == "success") then
+        -- === KEY ĐÚNG -> CHẠY SCRIPT CHÍNH ===
+        
+        -- Tạo thông báo nhỏ
+        game.StarterGui:SetCore("SendNotification", {
+            Title = "Thông báo System",
+            Text = "✅ Key hợp lệ! Đang tải Script...",
+            Duration = 5
+        })
+        
+        -- Load Script Chính
+        -- Cách 1: Load từ Link (Khuyên dùng để giấu code thật)
+        -- loadstring(game:HttpGet(Settings.MainScript))()
+        
+        -- Cách 2: Viết code thẳng vào đây (nếu script ngắn)
+        print("Script đang chạy...")
+        -- Ví dụ code bay:
+        -- game.Players.LocalPlayer.Character.Humanoid.WalkSpeed = 100
+        
+    else
+        -- === KEY SAI HOẶC HẾT HẠN ===
+        local msg = data and data.message or "Key không tồn tại hoặc sai HWID!"
+        LocalPlayer:Kick("❌ Lỗi Key: " .. msg)
+    end
+else
+    LocalPlayer:Kick("❌ Không thể kết nối đến máy chủ xác thực!")
+end
