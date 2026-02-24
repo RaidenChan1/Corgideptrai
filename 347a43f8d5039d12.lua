@@ -1,4 +1,4 @@
-
+--- xaiku dep trai cu to
 local Players = game:GetService("Players")
 local LocalPlayer = Players.LocalPlayer
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
@@ -55,7 +55,7 @@ if LocalPlayer:WaitForChild("leaderstats"):WaitForChild("Level").Value == 0 then
 end
 if _G.AutoFarm.AutoClickMenu then
     task.spawn(function()
-        -- Cho delay 1 xíu lỡ UI chưa load xong hẳn lúc vừa inject
+    
         task.wait(0.5) 
         local playerGui = LocalPlayer:FindFirstChild("PlayerGui")
         if playerGui then
