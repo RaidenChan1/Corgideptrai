@@ -2,26 +2,32 @@
 
 _G.AutoFarm = {
 
+   
+
+    AutoClickMenu = true,
+
     
-    XP = false,
+
+
+    XP = true,
 
     WaitTime = 0.1,
 
     
 
-    Shard = false,
+    Shard = true,
 
     ShardWaitTime = 0.5,
 
     
 
-    Diamond = false,
+    Diamond = true,
 
     DiamondWaitTime = 0.5,
 
     
 
- 
+
 
     LocalSpeed = false,
 
@@ -51,6 +57,8 @@ local RunService = game:GetService("RunService")
 
 local Workspace = game:GetService("Workspace")
 
+local VirtualInputManager = game:GetService("VirtualInputManager")
+
 
 
 
@@ -63,7 +71,7 @@ local function getSafeZoneCFrame()
 
     
 
-    -- Nếu chưa có bục thì tạo mới
+    
 
     if not safePart then
 
@@ -71,15 +79,15 @@ local function getSafeZoneCFrame()
 
         safePart.Name = safeZoneName
 
-        safePart.Size = Vector3.new(50, 2, 50) -- Rộng 50x50 để đứng thoải mái
+        safePart.Size = Vector3.new(50, 2, 50) 
 
-        safePart.Position = Vector3.new(0, 10000, 0) -- Đưa lên độ cao 10000 trên không
+        safePart.Position = Vector3.new(0, 10000, 0) 
 
         safePart.Anchored = true
 
         safePart.CanCollide = true
 
-        safePart.Transparency = 0.5 -- Hơi trong suốt (để 1 nếu muốn tàng hình luôn)
+        safePart.Transparency = 0.5 -- Hơi trong suốt
 
         safePart.Parent = Workspace
 
@@ -87,7 +95,7 @@ local function getSafeZoneCFrame()
 
     
 
-    -- Trả về CFrame nằm ngay trên cái bục (Y = 10003 để không bị kẹt vào part)
+    -- Trả về CFrame nằm ngay trên cái bục
 
     return CFrame.new(0, 10003, 0)
 
@@ -171,6 +179,77 @@ end
 
 task.spawn(function()
 
+    while task.wait(0.5) do
+
+        if _G.AutoFarm.AutoClickMenu then
+
+          
+
+            local playerGui = LocalPlayer:FindFirstChild("PlayerGui")
+
+            if playerGui then
+
+                local menu = playerGui:FindFirstChild("Menu")
+
+                if menu then
+
+                    local screen = menu:FindFirstChild("Screen")
+
+                    if screen then
+
+                        local centerPanel = screen:FindFirstChild("CenterPanel")
+
+                        if centerPanel then
+
+                            local button = centerPanel:FindFirstChild("Button")
+
+                            
+
+                            if button and button.Visible then
+
+                                local absPos = button.AbsolutePosition
+
+                                local absSize = button.AbsoluteSize
+
+                                
+
+                             
+
+                                local clickX = absPos.X + (absSize.X / 2)
+
+                                local clickY = absPos.Y + (absSize.Y / 2) + 36 
+
+
+
+                           
+
+                                VirtualInputManager:SendMouseButtonEvent(clickX, clickY, 0, true, game, 1)
+
+                                task.wait(0.05)
+
+                                VirtualInputManager:SendMouseButtonEvent(clickX, clickY, 0, false, game, 1)
+
+                            end
+
+                        end
+
+                    end
+
+                end
+
+            end
+
+        end
+
+    end
+
+end)
+
+
+
+
+task.spawn(function()
+
     while task.wait() do
 
         if _G.AutoFarm.XP then
@@ -209,7 +288,7 @@ end)
 
 
 
--- 2. Shards AutoFarm Loop
+
 
 task.spawn(function()
 
@@ -243,7 +322,7 @@ end)
 
 
 
--- 3. Diamonds AutoFarm Loop
+
 
 task.spawn(function()
 
@@ -277,11 +356,7 @@ end)
 
 
 
--- ==========================================
 
--- LOCAL PLAYER MODS (SPEED & JUMP)
-
--- ==========================================
 
 RunService.Heartbeat:Connect(function()
 
