@@ -1,4 +1,4 @@
--- ts file was generated at discord.gg/25ms
+-- xaiku dep trai
 
 local u1 = loadstring(game:HttpGet('https://raw.githubusercontent.com/bloodball/-back-ups-for-libs/main/sol'))()
 local _ = task.wait
