@@ -1,23 +1,4 @@
 
-_G.AutoFarm = {
-    AutoClickMenu = false,
-   
-    XP = false,
-    WaitTime = 0.1,
-    
-    Shard = false,
-    ShardWaitTime = 0.5,
-    
-    Diamond = false,
-    DiamondWaitTime = 0.5,
-    
-
-    LocalSpeed = false,
-    WalkSpeedMultiplier = 2,
-    
-    LocalJumpPower = false,
-    JumpPowerAmount = 100
-}
 local Players = game:GetService("Players")
 local LocalPlayer = Players.LocalPlayer
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
