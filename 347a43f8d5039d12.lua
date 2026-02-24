@@ -31,7 +31,7 @@ local RunService = game:GetService("RunService")
 local Workspace = game:GetService("Workspace")
 
 -- ==========================================
--- NOTIFICATION FUNCTION
+
 -- ==========================================
 local function sendNotification(title, text, duration)
     game.StarterGui:SetCore('SendNotification', {
@@ -43,7 +43,7 @@ local function sendNotification(title, text, duration)
 end
 
 -- ==========================================
--- AUTO SETUP FOR NEW PLAYERS (LEVEL 0)
+
 -- ==========================================
 local function setupNewPlayer()
     local v15 = {
