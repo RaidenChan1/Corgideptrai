@@ -10,6 +10,7 @@ local Workspace = game:GetService("Workspace")
 local VirtualInputManager = game:GetService("VirtualInputManager")
 local TeleportService = game:GetService("TeleportService")
 local HttpService = game:GetService("HttpService")
+
 local function sendNotification(title, text, duration)
     game.StarterGui:SetCore('SendNotification', {
         Title = title,
@@ -18,6 +19,7 @@ local function sendNotification(title, text, duration)
         Icon = 'rbxassetid://11510461364',
     })
 end
+
 local function setupNewPlayer()
     local v15 = {
         {
@@ -39,6 +41,7 @@ if LocalPlayer:WaitForChild("leaderstats"):WaitForChild("Level").Value == 0 then
     repeat task.wait() until LocalPlayer.leaderstats.Level.Value ~= 1
     sendNotification('Sheeps Softwares', 'Take the spells pls', 15)
 end
+
 local function ServerHop()
     sendNotification('Server Hop', 'Đang tìm server mới để chuyển...', 5)
     local PlaceId = game.PlaceId
@@ -53,14 +56,12 @@ local function ServerHop()
         if data and data.data then
             local availableServers = {}
             for _, v in pairs(data.data) do
-          
                 if type(v) == "table" and v.playing and v.maxPlayers and v.playing < v.maxPlayers and v.id ~= JobId then
                     table.insert(availableServers, v.id)
                 end
             end
             
             if #availableServers > 0 then
-              
                 local randomServer = availableServers[math.random(1, #availableServers)]
                 TeleportService:TeleportToPlaceInstance(PlaceId, randomServer, LocalPlayer)
             else
@@ -75,15 +76,15 @@ end
 
 task.spawn(function()
     local timeElapsed = 0
-    while task.wait(1) do 
+    while task.wait(1) do
         if _G.AutoFarm.AutoServerHop then
             timeElapsed = timeElapsed + 1
             if timeElapsed >= (_G.AutoFarm.HopTime * 60) then
-                timeElapsed = 0 -- Reset bộ đếm
+                timeElapsed = 0 
                 ServerHop()
             end
         else
-            timeElapsed = 0
+            timeElapsed = 0 
         end
     end
 end)
@@ -128,7 +129,6 @@ task.spawn(function()
         if _G.AutoFarm.XP then
             local character = LocalPlayer.Character
             if character and character:FindFirstChild("HumanoidRootPart") then
-               
                 character.HumanoidRootPart.CFrame = CFrame.new(-1954, 100, 828)
                 
                 task.wait(_G.AutoFarm.WaitTime)
@@ -177,6 +177,32 @@ task.spawn(function()
     end
 end)
 
+
+task.spawn(function()
+    while task.wait(1) do 
+        if _G.AutoFarm.AutoResetLowEnergy then
+            -- Dùng pcall để ko bị lỗi lúc nhân vật vừa chết, UI chưa kịp load
+            local success, energyText = pcall(function()
+                return LocalPlayer.PlayerGui.Main.SkillsBar.Energy.TextLabel.Text
+            end)
+            
+            if success and energyText then
+          
+                local currentEnergy = tonumber(string.match(energyText, "%d+"))
+                
+                if currentEnergy and currentEnergy < _G.AutoFarm.EnergyThreshold then
+                    local character = LocalPlayer.Character
+                    if character and character:FindFirstChild("Humanoid") and character.Humanoid.Health > 0 then
+                       
+                        character.Humanoid.Health = 0
+                        sendNotification('Auto Reset', 'Energy thấp, tự sát để reset!', 3)
+                        task.wait(5) -- Đợi 5 giây để hồi sinh xong mới check tiếp
+                    end
+                end
+            end
+        end
+    end
+end)
 
 RunService.Heartbeat:Connect(function()
     local character = LocalPlayer.Character
