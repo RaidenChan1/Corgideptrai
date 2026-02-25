@@ -195,7 +195,7 @@ task.spawn(function()
                     if character and character:FindFirstChild("Humanoid") and character.Humanoid.Health > 0 then
                        
                         character.Humanoid.Health = 0
-                        sendNotification('Auto Reset', 'Energy thấp, tự sát để reset!', 3)
+                        sendNotification('Auto Reset', 'regen mana', 3)
                         task.wait(5) 
                     end
                 end
