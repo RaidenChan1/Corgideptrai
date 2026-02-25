@@ -196,7 +196,7 @@ task.spawn(function()
                        
                         character.Humanoid.Health = 0
                         sendNotification('Auto Reset', 'Energy thấp, tự sát để reset!', 3)
-                        task.wait(5) -- Đợi 5 giây để hồi sinh xong mới check tiếp
+                        task.wait(5) 
                     end
                 end
             end
