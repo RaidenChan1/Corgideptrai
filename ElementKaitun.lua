@@ -1,4 +1,30 @@
---- xaiku dep trai cu to
+
+_G.AutoFarm = {
+
+    AutoClickMenu = false,
+    
+
+    AutoServerHop = true,
+    HopTime = 30, 
+
+
+    XP = false,
+    WaitTime = 0.1,
+    
+    Shard = false,
+    ShardWaitTime = 0.5,
+    
+    Diamond = false,
+    DiamondWaitTime = 0.5,
+    
+  
+    LocalSpeed = false,
+    WalkSpeedMultiplier = 2,
+    
+    LocalJumpPower = false,
+    JumpPowerAmount = 100
+}
+
 local Players = game:GetService("Players")
 local LocalPlayer = Players.LocalPlayer
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
@@ -6,24 +32,8 @@ local Remotes = ReplicatedStorage:WaitForChild("Remotes")
 local RunService = game:GetService("RunService")
 local Workspace = game:GetService("Workspace")
 local VirtualInputManager = game:GetService("VirtualInputManager")
-local function getSafeZoneCFrame()
-    local safeZoneName = "MySkySafeZone"
-    local safePart = Workspace:FindFirstChild(safeZoneName)
-    
-
-    if not safePart then
-        safePart = Instance.new("Part")
-        safePart.Name = safeZoneName
-        safePart.Size = Vector3.new(50, 2, 50) 
-        safePart.Position = Vector3.new(0, 10000, 0)
-        safePart.Anchored = true
-        safePart.CanCollide = true
-        safePart.Transparency = 0.5 -- Hơi trong suốt
-        safePart.Parent = Workspace
-    end
-    return CFrame.new(0, 10003, 0)
-end
-local safeZoneCFrame = getSafeZoneCFrame()
+local TeleportService = game:GetService("TeleportService")
+local HttpService = game:GetService("HttpService")
 local function sendNotification(title, text, duration)
     game.StarterGui:SetCore('SendNotification', {
         Title = title,
@@ -53,9 +63,60 @@ if LocalPlayer:WaitForChild("leaderstats"):WaitForChild("Level").Value == 0 then
     repeat task.wait() until LocalPlayer.leaderstats.Level.Value ~= 1
     sendNotification('Sheeps Softwares', 'Take the spells pls', 15)
 end
+local function ServerHop()
+    sendNotification('Server Hop', 'Đang tìm server mới để chuyển...', 5)
+    local PlaceId = game.PlaceId
+    local JobId = game.JobId
+    
+    local success, result = pcall(function()
+        return game:HttpGet("https://games.roblox.com/v1/games/" .. tostring(PlaceId) .. "/servers/Public?sortOrder=Asc&limit=100")
+    end)
+    
+    if success then
+        local data = HttpService:JSONDecode(result)
+        if data and data.data then
+            local availableServers = {}
+            for _, v in pairs(data.data) do
+          
+                if type(v) == "table" and v.playing and v.maxPlayers and v.playing < v.maxPlayers and v.id ~= JobId then
+                    table.insert(availableServers, v.id)
+                end
+            end
+            
+            if #availableServers > 0 then
+              
+                local randomServer = availableServers[math.random(1, #availableServers)]
+                TeleportService:TeleportToPlaceInstance(PlaceId, randomServer, LocalPlayer)
+            else
+                sendNotification('Server Hop', 'Không tìm thấy server phù hợp. Thử lại sau.', 5)
+            end
+        end
+    else
+        sendNotification('Server Hop', 'Lỗi khi lấy dữ liệu server!', 5)
+    end
+end
+
+
+task.spawn(function()
+    local timeElapsed = 0
+    while task.wait(1) do 
+        if _G.AutoFarm.AutoServerHop then
+            timeElapsed = timeElapsed + 1
+            if timeElapsed >= (_G.AutoFarm.HopTime * 60) then
+                timeElapsed = 0 -- Reset bộ đếm
+                ServerHop()
+            end
+        else
+            timeElapsed = 0
+        end
+    end
+end)
+
+
+
+
 if _G.AutoFarm.AutoClickMenu then
     task.spawn(function()
-    
         task.wait(0.5) 
         local playerGui = LocalPlayer:FindFirstChild("PlayerGui")
         if playerGui then
@@ -71,11 +132,9 @@ if _G.AutoFarm.AutoClickMenu then
                             local absPos = button.AbsolutePosition
                             local absSize = button.AbsoluteSize
                             
-                            -- Tính tọa độ tâm của button (+ 36 độ lệch y theo yêu cầu)
                             local clickX = absPos.X + (absSize.X / 2)
                             local clickY = absPos.Y + (absSize.Y / 2) + 36 
 
-                            -- Giả lập click chuột trái
                             VirtualInputManager:SendMouseButtonEvent(clickX, clickY, 0, true, game, 1)
                             task.wait(0.05)
                             VirtualInputManager:SendMouseButtonEvent(clickX, clickY, 0, false, game, 1)
@@ -86,13 +145,15 @@ if _G.AutoFarm.AutoClickMenu then
         end
     end)
 end
+
+
 task.spawn(function()
     while task.wait() do
         if _G.AutoFarm.XP then
             local character = LocalPlayer.Character
             if character and character:FindFirstChild("HumanoidRootPart") then
-                -- Teleport lên Safe Zone trên không
-                character.HumanoidRootPart.CFrame = safeZoneCFrame
+               
+                character.HumanoidRootPart.CFrame = CFrame.new(-1954, 100, 828)
                 
                 task.wait(_G.AutoFarm.WaitTime)
                 Remotes.DoClientMagic:FireServer('Fire', 'Consecutive Fire Bullets')
@@ -105,6 +166,8 @@ task.spawn(function()
         end
     end
 end)
+
+
 task.spawn(function()
     while task.wait(0.3) do
         if _G.AutoFarm.Shard then
@@ -120,6 +183,8 @@ task.spawn(function()
         end
     end
 end)
+
+
 task.spawn(function()
     while task.wait(0.3) do
         if _G.AutoFarm.Diamond then
@@ -135,6 +200,8 @@ task.spawn(function()
         end
     end
 end)
+
+
 RunService.Heartbeat:Connect(function()
     local character = LocalPlayer.Character
     if not character then return end
