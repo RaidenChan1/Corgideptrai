@@ -65,11 +65,11 @@ local function ServerHop()
                 local randomServer = availableServers[math.random(1, #availableServers)]
                 TeleportService:TeleportToPlaceInstance(PlaceId, randomServer, LocalPlayer)
             else
-                sendNotification('Server Hop', 'Không tìm thấy server phù hợp. Thử lại sau.', 5)
+                sendNotification('Server Hop', 'cant find', 5)
             end
         end
     else
-        sendNotification('Server Hop', 'Lỗi khi lấy dữ liệu server!', 5)
+        sendNotification('Server Hop', 'loi roi thg ga', 5)
     end
 end
 
