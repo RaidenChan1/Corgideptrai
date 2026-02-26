@@ -1,4 +1,4 @@
--- ts file was generated at discord.gg/25ms
+-- hieu trung dep trai 
 
 if not game:IsLoaded() then
     local _Message = Instance.new('Message', workspace)
