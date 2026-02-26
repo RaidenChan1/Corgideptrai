@@ -1,4 +1,4 @@
--- hieu trung 
+-- xaiku
 
 if not game:IsLoaded() then
     local _Message = Instance.new('Message', workspace)
@@ -1668,21 +1668,24 @@ while true do
                         if _G.Settings.KillAura or (_G.Settings.Auto_Diavolo or _G.Settings.Auto_Kira) then
                             if game:GetService('Players').LocalPlayer.Backpack:FindFirstChild(_G.Settings.Equipment) and _G.Settings.Used ~= 'Both' then
                                 game.Players.LocalPlayer.Character.Humanoid:EquipTool(game:GetService('Players').LocalPlayer.Backpack:FindFirstChild(_G.Settings.Equipment))
-                            local player = game:GetService('Players').LocalPlayer
-local char = player.Character
-local backpack = player:FindFirstChildOfClass('Backpack')
-local selectedWeapon = _G.Settings.Equipment
+                            elseif _G.Settings.Used == 'Both' or _G.Settings.Used == 'ALL' then
+                                speaker = game.Players.LocalPlayer
 
-if selectedWeapon and char and char:FindFirstChild('Humanoid') and backpack then
-    
-    local inBackpack = backpack:FindFirstChild(selectedWeapon)
-    local inCharacter = char:FindFirstChild(selectedWeapon)
+                                local v239, v240, v241 = pairs(speaker:FindFirstChildOfClass('Backpack'):GetChildren())
 
-    
-    if inBackpack and not inCharacter then
-        char.Humanoid:EquipTool(inBackpack)
-    end
-end
+                                while true do
+                                    local v242
+
+                                    v241, v242 = v239(v240, v241)
+
+                                    if v241 == nil then
+                                        break
+                                    end
+                                    if (v242:IsA('Tool') or v242:IsA('HopperBin')) and (v242.Name ~= 'Click to use' and not (string.find(v242.Name, 'Arrow') or string.find(v242.Name, 'Book'))) then
+                                        v242.Parent = speaker.Character
+                                    end
+                                end
+                            end
                         end
                     end)
                 end
