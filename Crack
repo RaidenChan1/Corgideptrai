@@ -1,4 +1,3 @@
--- xaiku dep trai aka cao hieu trung
 local oldHttpGet
 oldHttpGet = hookfunction(game.HttpGet, function(self, url, ...)
     if url and url:find("/?hwid") then
