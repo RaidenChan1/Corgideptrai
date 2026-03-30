@@ -3,7 +3,7 @@ oldHttpGet = hookfunction(game.HttpGet, function(self, url, ...)
     if url and url:find("/?hwid") then
         warn("[HttpGet] Fake /get-key response")
         return [[
-_G.index_key = "Key_5350014369"
+_G.index_key = "KEY_5350014369"
 _G.expired = 1770908824
 _G.pro = true
 ]]
