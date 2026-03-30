@@ -1,19 +1,15 @@
 local oldHttpGet
 oldHttpGet = hookfunction(game.HttpGet, function(self, url, ...)
-    if url and url:find("/?hwid") then
+    print(url)
+    local res = oldHttpGet(self, url, ...)
+    print(res)
+        if url and url:find("/?hwid") and not url:find('_NTTo') then
         warn("[HttpGet] Fake /get-key response")
         return [[
-_G.index_key = "Key_3636363"
-_G.expired = 1770908824
-_G.pro = true
+_G.index_key = "KEY_363636"
+_G.left = 36363
 ]]
     end
-    local res = oldHttpGet(self, url, ...)
-    warn("========== HTTPGET RESPONSE ==========")
-    print("URL:", url)
-    print("Body:")
-    print(res)
-    warn("====================================")
     return res
 end)
 _G.credit=[[Obfucator NTT - https://discord.gg/YAdrT39SWq]]
