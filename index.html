@@ -3,9 +3,10 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Giới hạn nhập văn bản</title>
+  <title>x2HieuTrung was hereee</title>
   <style>
     * { box-sizing: border-box; }
+
     body {
       margin: 0;
       font-family: Arial, sans-serif;
@@ -17,6 +18,7 @@
       justify-content: center;
       padding: 24px;
     }
+
     .card {
       width: 100%;
       max-width: 760px;
@@ -25,14 +27,17 @@
       box-shadow: 0 12px 30px rgba(0,0,0,0.08);
       padding: 24px;
     }
+
     h1 {
       margin: 0 0 8px;
       font-size: 28px;
     }
+
     p {
       margin: 0 0 16px;
       color: #6b7280;
     }
+
     .top-controls {
       display: flex;
       gap: 12px;
@@ -40,16 +45,19 @@
       margin-bottom: 16px;
       align-items: end;
     }
+
     .field {
       display: flex;
       flex-direction: column;
       gap: 6px;
     }
+
     label {
       font-size: 14px;
       font-weight: 700;
       color: #374151;
-    }                               
+    }
+
     select, input[type="number"] {
       border: 2px solid #d1d5db;
       border-radius: 12px;
@@ -59,10 +67,12 @@
       min-width: 160px;
       background: #fff;
     }
+
     select:focus, input[type="number"]:focus {
       border-color: #2563eb;
       box-shadow: 0 0 0 4px rgba(37,99,235,0.12);
     }
+
     textarea {
       width: 100%;
       height: 220px;
@@ -75,10 +85,12 @@
       outline: none;
       transition: border-color 0.2s ease, box-shadow 0.2s ease;
     }
+
     textarea:focus {
       border-color: #2563eb;
       box-shadow: 0 0 0 4px rgba(37,99,235,0.12);
     }
+
     .bottom {
       margin-top: 14px;
       display: flex;
@@ -87,18 +99,22 @@
       gap: 12px;
       flex-wrap: wrap;
     }
+
     .count {
       font-weight: 700;
       font-size: 15px;
     }
+
     .count.limit {
       color: #dc2626;
     }
+
     .actions {
       display: flex;
       gap: 10px;
       flex-wrap: wrap;
     }
+
     button {
       border: none;
       background: #2563eb;
@@ -108,15 +124,19 @@
       font-size: 14px;
       cursor: pointer;
     }
+
     button:hover {
       background: #1d4ed8;
     }
+
     .secondary {
       background: #6b7280;
     }
+
     .secondary:hover {
       background: #4b5563;
     }
+
     .note {
       margin-top: 10px;
       font-size: 14px;
@@ -127,22 +147,23 @@
 </head>
 <body>
   <div class="card">
-    <h1>X2HieuTrung Was Hereee</h1>
-    <p>website gioi han cao hieu trung dep trai </p>
+    <h1>x2HieuTrung was hereee</h1>
+    <p>hieu trung pro max</p>
 
     <div class="top-controls">
       <div class="field">
         <label for="presetLimit">Chọn nhanh</label>
         <select id="presetLimit">
-          <option value="200">200 ký tự</option>
-          <option value="600">600 ký tự</option>
+          <option value="50">50 từ</option>
+          <option value="100">100 từ</option>
+          <option value="200">200 từ</option>
           <option value="custom">Tự nhập</option>
         </select>
       </div>
 
       <div class="field">
         <label for="customLimit">Giới hạn tùy chỉnh</label>
-        <input id="customLimit" type="number" min="1" value="200" />
+        <input id="customLimit" type="number" min="1" value="50" />
       </div>
 
       <div class="field">
@@ -150,10 +171,10 @@
       </div>
     </div>
 
-    <textarea id="textInput" maxlength="200" placeholder="Nhập nội dung tại đây..."></textarea>
+    <textarea id="textInput" placeholder="Nhập nội dung tại đây..."></textarea>
 
     <div class="bottom">
-      <div id="count" class="count">0 / 200 ký tự</div>
+      <div id="count" class="count">0 / 50 từ</div>
       <div class="actions">
         <button id="clearBtn" class="secondary">Xóa</button>
       </div>
@@ -171,20 +192,39 @@
     const customLimit = document.getElementById('customLimit');
     const applyBtn = document.getElementById('applyBtn');
 
-    let limit = 200;
+    let limit = 50;
+
+    function getWords(text) {
+      const trimmed = text.trim();
+      if (!trimmed) return [];
+      return trimmed.split(/\s+/);
+    }
+
+    function countWords(text) {
+      return getWords(text).length;
+    }
+
+    function trimToWordLimit(text, maxWords) {
+      const trimmedLeft = text.replace(/^\s+/, '');
+      const words = trimmedLeft.match(/\S+/g) || [];
+
+      if (words.length <= maxWords) return text;
+
+      return words.slice(0, maxWords).join(' ');
+    }
 
     function applyLimit(newLimit) {
       const parsed = Number(newLimit);
+
       if (!Number.isFinite(parsed) || parsed < 1) {
         note.textContent = 'Vui lòng nhập giới hạn lớn hơn 0.';
         return;
       }
 
       limit = Math.floor(parsed);
-      textInput.maxLength = limit;
 
-      if (textInput.value.length > limit) {
-        textInput.value = textInput.value.slice(0, limit);
+      if (countWords(textInput.value) > limit) {
+        textInput.value = trimToWordLimit(textInput.value, limit);
       }
 
       customLimit.value = limit;
@@ -192,12 +232,12 @@
     }
 
     function updateUI() {
-      const length = textInput.value.length;
-      count.textContent = `${length} / ${limit} ký tự`;
+      const totalWords = countWords(textInput.value);
+      count.textContent = `${totalWords} / ${limit} từ`;
 
-      if (length >= limit) {
+      if (totalWords >= limit) {
         count.classList.add('limit');
-        note.textContent = `Đã đạt giới hạn ${limit} ký tự.`;
+        note.textContent = `Đã đạt giới hạn ${limit} từ.`;
       } else {
         count.classList.remove('limit');
         note.textContent = '';
@@ -205,9 +245,12 @@
     }
 
     textInput.addEventListener('input', () => {
-      if (textInput.value.length > limit) {
-        textInput.value = textInput.value.slice(0, limit);
+      const words = countWords(textInput.value);
+
+      if (words > limit) {
+        textInput.value = trimToWordLimit(textInput.value, limit);
       }
+
       updateUI();
     });
 
@@ -216,6 +259,7 @@
         customLimit.focus();
         return;
       }
+
       customLimit.value = presetLimit.value;
       applyLimit(presetLimit.value);
     });
@@ -233,12 +277,12 @@
     });
 
     clearBtn.addEventListener('click', () => {
-      textInput.value = ''; 
+      textInput.value = '';
       updateUI();
       textInput.focus();
     });
 
-    applyLimit(200);
+    applyLimit(50);
   </script>
 </body>
 </html>
