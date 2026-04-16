@@ -1,5 +1,4 @@
 
-
 local oldHttpGet
 oldHttpGet = hookfunction(game.HttpGet, function(self, url, ...)
     print(url)
