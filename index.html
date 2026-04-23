@@ -114,7 +114,7 @@
             <input type="password" id="password" placeholder="Mật khẩu">
             <button class="btn-login" onclick="checkLogin()">Accept</button>
             <button class="btn-skip" onclick="skipLogin()">Skip</button>
-            <p id="login-error" style="color: #f85149; font-size: 12px; margin-top: 10px; display: none;">Sai tài khoản hoặc mật khẩu!</p>
+            <p id="login-error" style="color: #f85149; font-size: 12px; margin-top: 10px; display: none;">sai roi thang ngu</p>
         </div>
     </div>
 
@@ -157,7 +157,7 @@
             if (user === ADMIN_USER && pass === ADMIN_PASS) {
                 document.getElementById("login-modal").style.display = "none";
                 document.getElementById("admin-panel").style.display = "block";
-                alert("Chào mừng Admin HieuTrung!");
+                alert("Hi Admin");
             } else {
                 errorMsg.style.display = "block";
             }
